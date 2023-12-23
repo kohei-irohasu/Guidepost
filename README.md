@@ -1,2 +1,0 @@
-# Guidepost
-道標

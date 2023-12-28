@@ -41,14 +41,34 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'users',
+    'dj_rest_auth',
+    'accounts',
     'stories',
     'tags',
     'follows',
     'bookmarks'
 ]
 
-AUTH_USER_MODEL = 'users.Users'
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ]
+} 
+
+# dj-rest-auth
+REST_AUTH = {
+    'USE_JWT': True,
+}
+
+# django-rest-framework-simplejwt
+SIMPLEJWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30)
+}
+
+# カスタムうユーザー
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

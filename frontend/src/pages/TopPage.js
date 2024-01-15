@@ -1,6 +1,6 @@
 import React from "react";
 
-const TopPage = () => {
+export const TopPage = () => {
     return (
         <div>
             <h1>TopPageです</h1>
@@ -14,4 +14,3 @@ const TopPage = () => {
     )
 }
 
-export default TopPage

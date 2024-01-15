@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'stories',
     'tags',
     'follows',
-    'bookmarks'
+    'bookmarks',
+    'corsheaders',
 ]
 
 # DRF
@@ -71,6 +72,7 @@ SIMPLEJWT = {
 AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,6 +81,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
 
 ROOT_URLCONF = 'config.urls'
 

@@ -1,12 +1,14 @@
-import react from "react";
-import { Routes, Route } from "react-router-dom";
+import React from "react";
+import { RouterConfig } from "./pages/RouteConfig";
+import { AuthProvider } from "./services/AuthService";
+import { BrowserRouter as Router } from "react-router-dom";
 
-function App() {
+export const App = () => {
   return (
-    <div>
-      <h1>Hello World with React!!</h1>
-    </div>
+    <Router>
+      <AuthProvider>
+        <RouterConfig />
+      </AuthProvider>
+    </Router>
   );
 }
-
-export default App;

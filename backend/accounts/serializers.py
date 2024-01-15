@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
 User = get_user_model()
 
@@ -51,13 +52,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         validated_data.pop('password_confirm')
+        
         user = User.objects.create_user(
             nick_name=validated_data['nick_name'],
             email=validated_data['email'],
-            profile=validated_data['profile'],
             password=validated_data['password'],
         )
         
+        # token = Token.objects.create(user=user)
+                
         return user
 
 # ユーザー情報取得用

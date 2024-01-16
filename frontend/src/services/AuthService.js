@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
     }
 
-    const login = (email, password) => {
+    const login = (email) => {
         try {
             // ここでトークンをCookieに保存する実装必要
             setUser({ email }); // 本当はユーザー情報をセットしたい
@@ -34,14 +34,21 @@ export const AuthProvider = ({ children }) => {
         navigateToLogin();
     }
 
+    const signup = (email) => {
+        try {
+            // 新規登録処理
+            // 成功した場合、トークンをCookieに保存する実装が必要
+            setUser({ email });  // 本当はユーザー情報
+            navigatetoTop();
+        } catch (error) {
+            console.error('Signup failed:', error);
+            throw error;
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{user, login, logout}}>
+        <AuthContext.Provider value={{ user, login, logout, signup }}>
             {children}
         </AuthContext.Provider>
     )
 }
-
-
-// 改善点としては以下が考えられます:
-
-// 認証検証ロジックを実際のバックエンドと連携

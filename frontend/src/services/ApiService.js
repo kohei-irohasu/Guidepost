@@ -37,7 +37,7 @@ export const LoginService = {
             if (error.response) {
                 const { data } = error.response;
                 console.error("API Error:", data);
-                throw new Error(data.non_field_errors[0]);
+                throw new Error(data.email[0]);
             } else if (error.request) {
                 console.error("No response received:", error.request);
                 throw new Error("レスポンスがありません");

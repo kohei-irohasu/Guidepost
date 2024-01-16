@@ -32,12 +32,12 @@ export const Login = () => {
         if (isValid) {
             try {
                 const response = await LoginService.login(loginEmaill, loginPassword);
-                await login(loginEmaill, loginPassword); // ログイン処理
+                await login(loginEmaill); // ログイン処理
                 const { access, refresh } = response;
                 console.log('Login successful!');
                 // ログイン成功時の処理を追加
             }   catch (error) {
-                console.log(error.message);
+                console.log(error);
                 setError(error.message);
                 // ログイン失敗時の処理を追加
             }
@@ -51,6 +51,7 @@ export const Login = () => {
     return (
       <div>
         <h2>Login</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <input 
             type="email"
             placeholder='Email'
@@ -70,8 +71,6 @@ export const Login = () => {
         <button onClick={handleShowRegistration}>
             {showRegistration ? "閉じる" : "新規登録はこちら"}
         </button>
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
     )
 }

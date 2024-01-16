@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { LoginService } from "../services/ApiService";
+import { AuthContext } from "../services/AuthService";
 
 export const Registration = () => {
+    const { signup } = useContext(AuthContext);
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
     const [password_confirm, setPassword_confirm] = useState('');
     const [nick_name, setNick_name] = useState('');
+    const [error, setError] = useState('');
 
     const validateResitrationInput = (email, password, password_confirm, nick_name) => {
         if (!email || !password || !password_confirm || !nick_name) {
@@ -32,10 +35,12 @@ export const Registration = () => {
         if (isValid) {
             try {
                 await LoginService.register(registerEmail, registerPassword, password_confirm, nick_name);
+                await signup(registerEmail);
                 console.log('Registration successful:');
                 // 登録成功時の処理を追加
             }   catch (error) {
-                console.log('Registration failed:', error.message);
+                console.log('Registration failed:', error);
+                setError(error.message);
                 // 登録失敗時の処理を追加
             }
         }
@@ -43,6 +48,9 @@ export const Registration = () => {
 
     return (
         <div>
+            <div>
+                {error && <p style={{ color: "red" }}>{error}</p>}
+            </div>
             <div>
                 <input
                     type="email"

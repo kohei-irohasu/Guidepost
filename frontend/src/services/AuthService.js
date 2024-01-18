@@ -1,5 +1,5 @@
 // ユーザーの認証情報の管理
-
+import axios from "axios";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,32 +17,32 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
     }
 
-    const login = (email) => {
+    const login = (email, token) => {
         try {
-            // ここでトークンをCookieに保存する実装必要
             setUser({ email }); // 本当はユーザー情報をセットしたい
+            localStorage.setItem("access", token);
             navigatetoTop();
+
         }   catch (error) {
             console.error('Login failed:', error);
-            throw error;
         }
     }
 
     const logout = () => {
         // ログアウト処理(トークンの削除など)
         setUser(null);
+        localStorage.removeItem("access");
+        delete axios.defaults.headers.common["Authorization"];
         navigateToLogin();
     }
 
     const signup = (email) => {
         try {
             // 新規登録処理
-            // 成功した場合、トークンをCookieに保存する実装が必要
             setUser({ email });  // 本当はユーザー情報
             navigatetoTop();
         } catch (error) {
             console.error('Signup failed:', error);
-            throw error;
         }
     }
 

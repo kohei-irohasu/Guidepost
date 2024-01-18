@@ -1,6 +1,5 @@
 from rest_framework import status, views, generics
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 
@@ -18,8 +17,24 @@ class LoginView(views.APIView):
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
+        
+        validated_data = serializer.validated_data
+        
+        access_token = validated_data.get('access_token')
+        refresh_token = validated_data.get('refresh_token')
+        user = validated_data.get('user')
+        
+        # print(access_token)
+        
+        response_data = {'message': 'Login successful'}
+        
+        response = Response(response_data)
+        response.set_cookie('access_token', access_token, httponly=True)
+        response.set_cookie('refresh_token', refresh_token, httponly=True)
+        # response.set_cookie('access_token', access_token, httponly=True, samesite='None', secure=True)
+        # response.set_cookie('refresh_token', refresh_token, httponly=True, samesite='None', secure=True)
+        
+        return response
 # ログアウト用
 class LogoutView(views.APIView):
     def post(self, request, *args, **kwargs):

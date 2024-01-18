@@ -32,8 +32,9 @@ export const Login = () => {
         if (isValid) {
             try {
                 const response = await LoginService.login(loginEmaill, loginPassword);
-                await login(loginEmaill); // ログイン処理
-                const { access, refresh } = response;
+                const token = response.access;
+
+                await login(loginEmaill, token); // ログイン処理
                 console.log('Login successful!');
                 // ログイン成功時の処理を追加
             }   catch (error) {

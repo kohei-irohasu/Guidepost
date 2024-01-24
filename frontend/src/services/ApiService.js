@@ -19,8 +19,8 @@ export const LoginService = {
                 console.error("No response received:", error.request);
                 throw new Error("サーバーからの応答がありません");
             } else {
-                console.error("Request failed:", error.message);
-                throw new Error("リクエストが失敗しました");
+                console.error("Request failed:", error);
+                throw new Error(error.message);
             }
         }
     },
@@ -43,8 +43,8 @@ export const LoginService = {
                 console.error("No response received:", error.request);
                 throw new Error("レスポンスがありません");
             } else {
-                console.error("Request failed:", error.message);
-                throw new Error("リクエストが失敗しました");
+                console.error("Request failed:", error);
+                throw new Error(error.message);
             }
         }
     },

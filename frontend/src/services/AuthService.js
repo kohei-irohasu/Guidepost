@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
 
-    const navigatetoTop = () => {
+    const navigateToTop = () => {
         navigate('/');
     }
 
@@ -17,11 +17,15 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
     }
 
+    const navigateToRegister = () => {
+        navigate('/register');
+    }
+
     const login = (email, token) => {
         try {
-            setUser({ email }); // 本当はユーザー情報をセットしたい
+            setUser({ email });
             localStorage.setItem("access", token);
-            navigatetoTop();
+            navigateToTop();
 
         }   catch (error) {
             console.error('Login failed:', error);
@@ -36,18 +40,17 @@ export const AuthProvider = ({ children }) => {
         navigateToLogin();
     }
 
-    const signup = (email) => {
+    const signup = () => {
         try {
             // 新規登録処理
-            setUser({ email });  // 本当はユーザー情報
-            navigatetoTop();
+            navigateToLogin();
         } catch (error) {
             console.error('Signup failed:', error);
         }
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, signup }}>
+        <AuthContext.Provider value={{ user, login, logout, signup, navigateToRegister }}>
             {children}
         </AuthContext.Provider>
     )

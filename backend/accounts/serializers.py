@@ -43,7 +43,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'nick_name', 'profile', 'password', 'password_confirm']
+        fields = ['uuid', 'email', 'nick_name', 'profile', 'password', 'password_confirm']
     
     def validate(self, data):
         if data['password'] != data['password_confirm']:
@@ -58,8 +58,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
         )
-        
-        # token = Token.objects.create(user=user)
                 
         return user
 
@@ -67,7 +65,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'nick_name', 'profile']
+        fields = ['uuid', 'email', 'nick_name', 'profile']
         read_only_fields = ('email',)
         
 # 一般公開用

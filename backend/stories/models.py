@@ -7,8 +7,8 @@ from tags.models import Tag
 class Story(models.Model):
     """キャリアストーリーのモデル"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    text = models.TextField()
+    title = models.CharField(max_length=255, default="title")
+    text = models.TextField(null=True)
     private = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

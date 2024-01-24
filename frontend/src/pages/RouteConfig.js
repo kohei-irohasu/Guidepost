@@ -8,6 +8,7 @@ import { CareerStoryDetail } from "./CareerStoryDetailPage";
 import { TopPage } from "./TopPage";
 import { Page404 } from "./Page404";
 import { AuthContext } from "../services/AuthService";
+import { Registration } from "./Registration";
 
 export const RouterConfig = () => {
   const {user, logout} = useContext(AuthContext);
@@ -23,7 +24,8 @@ export const RouterConfig = () => {
         <Route index element={<TopPage />} />
         <Route path="/profile" 
                element={user ? <Profile /> : <Navigate to="/login" />} /> 
-        <Route path="/login" element={<Login />} /> 
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Registration />} />
         <Route path="/searchresults" element={<SearchResults />} /> 
         <Route path="/careerstorydetail" element={<CareerStoryDetail />} />
         <Route path="*" element={<Page404 />} />

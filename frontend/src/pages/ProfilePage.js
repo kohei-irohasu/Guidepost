@@ -24,7 +24,6 @@ export const Profile = () => {
                 <>
                     <h2>Mypage</h2>
                     <p>Email: {user.email}</p>
-                    <p>Id: {user.id}</p>
                     <p>Nick Name: {user.nick_name}</p>
                     <p>Profile: {user.profile}</p>
                 </>

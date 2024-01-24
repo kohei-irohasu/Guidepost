@@ -49,6 +49,9 @@ export const Registration = () => {
     return (
         <div>
             <div>
+                <h2>新規登録</h2>
+            </div>
+            <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
             </div>
             <div>

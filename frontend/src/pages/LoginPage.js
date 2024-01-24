@@ -1,11 +1,9 @@
 import React, {useState, useContext} from "react";
 import { AuthContext } from "../services/AuthService";
 import { LoginService } from "../services/ApiService";
-import { Registration } from "./Registration";
 
 export const Login = () => {
-    const { login } = useContext(AuthContext);
-    const [showRegistration, setShowRegistration] = useState(false);
+    const { login, navigateToRegister } = useContext(AuthContext);
 
     const [loginEmaill, setLoginEmaill] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -45,8 +43,8 @@ export const Login = () => {
         }
     }
 
-    const handleShowRegistration = () => {
-        setShowRegistration(!showRegistration);
+    const handleRegistration = () => {
+        navigateToRegister();
     }
 
     return (
@@ -67,11 +65,8 @@ export const Login = () => {
         />
         <button onClick={handleLogin}>Login</button>
 
-        <h2>新規登録</h2>
-        {showRegistration && <Registration />}
-        <button onClick={handleShowRegistration}>
-            {showRegistration ? "閉じる" : "新規登録はこちら"}
-        </button>
+        <h2></h2>
+        <button onClick={handleRegistration}>新規登録はこちら</button>
     </div>
     )
 }

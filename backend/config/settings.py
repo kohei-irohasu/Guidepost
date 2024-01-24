@@ -39,9 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
+    
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    
     'accounts',
     'stories',
     'tags',
@@ -55,7 +61,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ]
-} 
+}
+
+SITE_ID = 1
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'user'
+AUTH_USER_MODEL = 'accounts.User' 
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # dj-rest-auth
 REST_AUTH = {
@@ -66,7 +79,15 @@ REST_AUTH = {
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'USER_ID_FIELD': 'uuid',
 }
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True              
+ACCOUNT_UNIQUE_EMAIL = True                
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
 
 # カスタムうユーザー
 AUTH_USER_MODEL = 'accounts.User'
@@ -75,6 +96,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

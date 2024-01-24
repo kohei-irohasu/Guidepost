@@ -2,6 +2,8 @@ from rest_framework import status, views, generics
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
+from django.db import IntegrityError
+from dj_rest_auth.registration.views import RegisterView
 
 from .serializers import (
     LoginSerializer, UserSerializer, 
@@ -11,6 +13,14 @@ from .serializers import (
 )
 
 User = get_user_model()
+
+# dj_rest_authの新規登録をカスタマイズ
+class customRegistrationView(RegisterView):
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except IntegrityError as e:
+            return Response({'error': 'email address is alredy in use.'}, status=status.HTTP_400_BAD_REQUEST)
 
 # ログイン用
 class LoginView(views.APIView):
@@ -54,6 +64,8 @@ class RegistrationView(views.APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({'detail': 'User successfully registered.'}, status=status.HTTP_201_CREATED)
+        
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # ユーザー情報取得用

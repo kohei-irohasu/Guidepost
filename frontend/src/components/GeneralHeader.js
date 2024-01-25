@@ -24,7 +24,7 @@ export const GeneralHeader = ({user, onLogout}) => {
             )}
             <ul>
                 {/* 検索機能はcomponetsに切り出す */}
-                <input type="text" />
+                <input type="text" aria-label="search"/>
             </ul>
             <Outlet />
         </div>

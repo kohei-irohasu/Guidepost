@@ -7,7 +7,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState('');
 
     const navigateToTop = () => {
         navigate('/');
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         // ログアウト処理(トークンの削除など)
-        setUser(null);
+        setUser('');
         localStorage.removeItem("access");
         delete axios.defaults.headers.common["Authorization"];
         navigateToLogin();

@@ -65,7 +65,6 @@ export const Login = () => {
         />
         <button onClick={handleLogin}>Login</button>
 
-        <h2></h2>
         <button onClick={handleRegistration}>新規登録はこちら</button>
     </div>
     )

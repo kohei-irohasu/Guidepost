@@ -2,10 +2,45 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8000";
 
+const api = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+    },
+});
+
+// 共通前処理
+api.interceptors.request.use((config) => {
+    if (!config.url.endsWith('/accounts/register/') && !config.url.endsWith('/auth/login/')) {
+        const token = localStorage.getItem("access");
+        if (token) {
+            config.headers.Authorization = `JWT ${token}`;
+        }
+    }
+    return config;
+});
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        switch (error.response?.status) {
+            case 400:
+            case 401: 
+            case 403:
+                const message = Object.values(error.response.data).flat();
+                return Promise.reject({ level: "warning", message: message });
+            default:
+                return Promise.reject(new Error("想定外のエラーが発生しました。"));
+        }
+    }
+);
+
+// ログイン関係
 export const LoginService = {
     login: async (email, password) => {
         try {
-            const response = await api.post(`${BASE_URL}/auth/login/`, {
+            const response = await api.post("/auth/login/", {
                 email,
                 password,
             });
@@ -27,7 +62,7 @@ export const LoginService = {
 
     register: async (email, password, password_confirm, nick_name) => {
         try {
-            const response = await api.post(`${BASE_URL}/accounts/register/`, {
+            const response = await api.post("/accounts/register/", {
                 email,
                 password,
                 password_confirm,
@@ -50,59 +85,42 @@ export const LoginService = {
     },
 };
 
+// ユーザー関係
 export const UserService = {
 
     getUserProfile: async() => {
         try {
-          const response = await api.get(`${BASE_URL}/accounts/profile/`);
+          const response = await api.get("/accounts/profile/");
           return response.data; 
         } catch (error) {
             console.log(error);
             throw error;
         }
-    }
-    
-};
-
-const api = axios.create({
-    baseURL: "http://localhost:8000",
-    headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
     },
-});
 
-// 共通前処理
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("access");
-    if (token) {
-        config.headers.Authorization = `JWT ${token}`;
-    }
-    return config;
-});
-
-api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        switch (error.response?.status) {
-            case 400: {
-                const message = Object.values(error.response.data).flat();
-                return Promise.reject({ level: "warning", message: message });
-            }
-            case 401: {
-                const token = localStorage.getItem("access");
-                if (token) {
-                    localStorage.removeItem("access");
-                    return Promise.reject(new Error("ログイン有効期限切れです。"));
-                } else {
-                    return Promise.reject(new Error("認証エラーです。"));
-                }
-            }
-            case 403: {
-                return Promise.reject(new Error("権限エラーです"));
-            }
-            default:
-                return Promise.reject(new Error("想定外のエラーが発生しました。"));
+    updateUserProfile: async(editedUser) => {
+        try {
+            const response = await api.put("/accounts/update/", editedUser);
+        } catch (error) {
+            console.error('Error updating user profile:', error);
+            throw error;
         }
-    }
-);
+    },
+
+    deleteUser: async(password) => {
+        try {
+            const response = await api.delete("/accounts/delete/",{
+                data: { password },
+            });
+            
+            if (response.status === 204) {
+                return true;
+            } else {
+                throw new Error('Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            throw error;
+        }
+    },
+};

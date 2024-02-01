@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+from stories.serializers import StorySerializer
 
 # ログイン用
 class LoginSerializer(serializers.Serializer):
@@ -63,9 +64,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 # ユーザー情報取得用
 class UserSerializer(serializers.ModelSerializer):
+    stories = StorySerializer(read_only=True)
+    
     class Meta:
         model = User
-        fields = ['uuid', 'email', 'nick_name', 'profile']
+        fields = ['uuid', 'email', 'nick_name', 'profile', 'stories']
         read_only_fields = ('email',)
         
 # 一般公開用

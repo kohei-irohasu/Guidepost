@@ -88,9 +88,10 @@ export const LoginService = {
 // ユーザー関係
 export const UserService = {
 
-    getUserProfile: async() => {
+    getUserProfile: async () => {
         try {
           const response = await api.get("/accounts/profile/");
+          console.log('user:', response.data);
           return response.data; 
         } catch (error) {
             console.log(error);
@@ -98,16 +99,17 @@ export const UserService = {
         }
     },
 
-    updateUserProfile: async(editedUser) => {
+    updateUserProfile: async (editedUser) => {
         try {
             const response = await api.put("/accounts/update/", editedUser);
+            return response
         } catch (error) {
             console.error('Error updating user profile:', error);
             throw error;
         }
     },
 
-    deleteUser: async(password) => {
+    deleteUser: async (password) => {
         try {
             const response = await api.delete("/accounts/delete/",{
                 data: { password },
@@ -124,3 +126,23 @@ export const UserService = {
         }
     },
 };
+
+// キャリアストーリー関係
+export const StoryService = {
+
+    createStory: async (storyData) => {
+        return api.post("/stories/", storyData);
+    },
+
+    updateStory: async (storyId, storyData) => {
+        return api.put(`/stories/${storyId}/`, storyData);
+    },
+
+    getUserStory: async (storyId) => {
+        return api.get(`/stories/${storyId}/`);
+    },
+
+    deleteStory: async (storyId) => {
+        return api.delete(`/stories/${storyId}/`);
+    },
+}

@@ -4,7 +4,7 @@ export const EditProfile = ({ user, onSave, onCancel }) => {
     const [editedUser, setEditedUser] = useState({
         email: user.email,
         nick_name: user.nick_name,
-        bio: user.profile,
+        profile: user.profile,
     });
 
     const handleInputChange = (e) => {
@@ -30,7 +30,7 @@ export const EditProfile = ({ user, onSave, onCancel }) => {
             <input type="text" name="nick_name" value={editedUser.nick_name || ""} onChange={handleInputChange} />
 
             <label>Bio:</label>
-            <textarea name="profile" value={editedUser.profile} onChange={handleInputChange} />
+            <textarea name="profile" value={editedUser.profile || ""} onChange={handleInputChange} />
 
             <button type="submit">Save</button>
             <button type="button" onClick={hadleCancel}>Cancel</button>
